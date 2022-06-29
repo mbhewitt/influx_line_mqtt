@@ -14,3 +14,5 @@ class labm:
 
 tag ={"measurement_type":"temp","room":"bed"}
 print(list(tag.keys()))
+tp = [1,2,3,4,5,6,7,8,9,10]
+print(tp[1:])
