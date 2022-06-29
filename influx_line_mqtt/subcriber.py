@@ -56,8 +56,6 @@ class Decode:
 class Subscriber:
     
     def __init__(self, broker,topic, port=1883,):
-        self.data = None
-        self.decoded_data = None
         self.broker = broker
         self.topic = topic
         self._on_message:function = None
@@ -66,11 +64,11 @@ class Subscriber:
         
     
     @property
-    def on_response(self):
+    def on_message(self):
         return self._on_message
     
-    @on_response.setter
-    def on_response(self,func):
+    @on_message.setter
+    def on_message(self,func):
         self._on_message = func
         
 
@@ -80,31 +78,28 @@ class Subscriber:
         self.client.connect(self.broker, self.port)
 
         self.client.subscribe(topic=self.topic)
-        self.client.on_message = self.on_message
+        self.client.on_message = self._on_message_inner
         self.client.loop_forever()
         
 
 
     
-    def on_message(self,client,userdata,message):
+    def _on_message_inner(self,client,userdata,message):
         message_decode =  message.payload.decode("utf-8")
         data = Decode(message_decode).decode()
-        self._on_message(data)
+        self._on_message(client,userdata,data)
 
     
-    def _decode(self):
-        self.decoded_data = Decode(self.data).decode()
-        print(self.decoded_data)
         
         
         
-def pp(data):
+def pp(client,userdata,data):
     print(data)
 
 if __name__ == "__main__":
     mqttBroker = "mqtt.eclipseprojects.io"
     sub = Subscriber(mqttBroker,"home/temp/bed/",port=1883)
-    sub.on_response = pp
+    sub.on_message = pp
     sub.start()
     
 
