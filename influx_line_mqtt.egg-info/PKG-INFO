@@ -1,0 +1,7 @@
+Metadata-Version: 2.1
+Name: influx-line-mqtt
+Version: 0.2.0
+Summary: A library to publish data to InfluxDB using MQTT
+Author: Priyam Srivastava
+
+Package used can combines influx-line-protocol and paho functionality together, using this you can make a subscriber and client, which use influx line protocol to send and receive data
