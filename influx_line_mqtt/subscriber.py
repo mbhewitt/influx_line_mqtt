@@ -79,6 +79,7 @@ class Subscriber:
         broker: str,
         topic: str,
         port: int = 1883,
+        client_id: str ="Smartphone",
     ):
         """Creates an instance of Subscriber.
 
@@ -91,8 +92,18 @@ class Subscriber:
         self.topic = topic
         self._on_message: function = None
         self.port = port
-        self.client = mqtt.Client("Smartphone")
+        self.client = mqtt.Client(client_id)
+        # self._on_connection:function = None
+        # self._on_connection_failed = None
+        # self.client.on_connect
+        # self.client.on_connect_fail
+        # self.client.on_disconnect
+        # self.client.on_socket_close
+        # self.client.on_socket_open
+        # self.client.on_subscribe
+        # self.client.on_unsubscribe
 
+        
     @property
     def on_message(self):
         return self._on_message

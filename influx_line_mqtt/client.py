@@ -60,8 +60,27 @@ class Client:
                 )
                 exit()
         return epoch_timestamp
+    
+    def make_send(self,
+        topic: str,
+        tags: Dict[str, Any],
+        values: Dict[str, Any],
+        epoch_timestamp: float,
+        dest_table: str | None = None,                  
+                  ):
+        """Method to make data and send it
+        """
+        self._make_data(
+            topic=topic,
+            tags=tags,
+            values=values,
+            epoch_timestamp=epoch_timestamp,
+            dest_table=dest_table,
+        )
+        self._send_data()
+        
 
-    def make_data(
+    def _make_data(
         self,
         topic: str,
         tags: Dict[str, Any],
@@ -89,8 +108,8 @@ class Client:
         for (k, v) in tags.items():
             self.metric.add_tag(k, v)
 
-    def send_data(self):
-        """Method to sent the made data made after using make_data
+    def _send_data(self):
+        """Method to sent the made data made after using_make_data 
         """
         self.client.publish(topic=self.topic, payload=f"{self.metric}")
 
@@ -105,12 +124,11 @@ if __name__ == "__main__":
     port = 1883
     inf = Client(broker=broker, port=port)
     while True:
-        inf.make_data(
+        inf.make_send(
             topic="home",
             tags={"measurement_type": "temp", "room": "bed"},
             values={"temp": 33.0},
             epoch_timestamp="2022-06-24 16:06:25.126144",
         )
-        inf.send_data()
         time.sleep(5)
 
