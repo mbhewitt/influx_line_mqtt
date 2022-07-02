@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: influx-line-mqtt
-Version: 0.2.0
+Version: 0.3.0
 Summary: A library to publish data to InfluxDB using MQTT
 Author: Priyam Srivastava
 
