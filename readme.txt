@@ -1,1 +1,0 @@
-Package used can combines influx-line-protocol and paho functionality together, using this you can make a subscriber and client, which use influx line protocol to send and receive data

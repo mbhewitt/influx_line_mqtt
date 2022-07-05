@@ -1,3 +1,4 @@
+from typing import Dict, List
 import paho.mqtt.client as mqtt
 
 
@@ -26,8 +27,9 @@ class Decode:
     def __init__(self, data: str):
         """
         Gives an instance of Decode
+        This class is used to decode the message into an instance of Influx_Data class.
         Args:
-            data (str): provide the data received by subscriber
+            data (str): provide the data received by subscriber in influx_line_protocol
         """
         self.data = data.strip()
         self._data_break = self._break()
@@ -42,13 +44,25 @@ class Decode:
             self._measurement(), self._tag_set(), self._field_set(), self._timestamp()
         )
 
-    def _break(self):
+    def _break(self) -> List[str]:
+        """Private method to split the data on " "
+
+        Returns:
+            List[str]: list of data broken on " "
+        """
         return self.data.split(" ")
 
     def _timestamp(self):
+        """Private method to extract the timestamp from the _data_break
+
+        Returns:
+            int: timestamp
+        """
         return int(self._data_break[2])
 
     def _field_set(self):
+        """Private method to extract the field set from the _data_break
+        """
         field_dict = self._data_break[1]
         list_fields = field_dict.split(",")
         field_set = {}
@@ -59,9 +73,19 @@ class Decode:
                 field_set[field_key] = field_value
 
     def _measurement(self):
+        """Private method to extract the measurement from the _data_break
+
+        Returns:
+            str: measurement
+        """
         return self._data_break[0].split(",")[0]
 
-    def _tag_set(self):
+    def _tag_set(self) -> Dict[str, str]:
+        """Private method to extract the tag set from the _data_break
+
+        Returns:
+            Dict[str,str]: _description_
+        """
         list_tags = self._data_break[0].split(",")[1:]
         tag_set = {}
         for tag in list_tags:
@@ -79,7 +103,7 @@ class Subscriber:
         broker: str,
         topic: str,
         port: int = 1883,
-        client_id: str ="Smartphone",
+        client_id: str = "Smartphone",
     ):
         """Creates an instance of Subscriber.
 
@@ -87,29 +111,25 @@ class Subscriber:
             broker (str): Address of the broker you are using.
             topic (str): Give the topic you want to subscribe to.
             port (int, optional): Port number. Defaults to 1883.
+            client_id (str, optional): Client ID. Defaults to "Smartphone".
         """
         self.broker = broker
         self.topic = topic
         self._on_message: function = None
         self.port = port
         self.client = mqtt.Client(client_id)
-        # self._on_connection:function = None
-        # self._on_connection_failed = None
-        # self.client.on_connect
-        # self.client.on_connect_fail
-        # self.client.on_disconnect
-        # self.client.on_socket_close
-        # self.client.on_socket_open
-        # self.client.on_subscribe
-        # self.client.on_unsubscribe
 
-        
     @property
     def on_message(self):
         return self._on_message
 
     @on_message.setter
     def on_message(self, func):
+        """property to set the on_message function
+
+        Args:
+            func (Callable): Function to be called when message is received
+        """
         self._on_message = func
 
     def start(self):
@@ -123,17 +143,13 @@ class Subscriber:
         self.client.loop_forever()
 
     def _on_message_inner(self, client, userdata, message):
+        """Inner module that takes the received message and decodes it.
+
+        Args:
+            client (Any):   MQTT client
+            userdata (Any): Userdata
+            message (Any): Received message
+        """
         message_decode = message.payload.decode("utf-8")
-        data = Decode(message_decode).decode()
+        data: Influx_Data = Decode(message_decode).decode()
         self._on_message(client, userdata, data)
-
-
-def pp(client, userdata, data):
-    print(data)
-
-
-if __name__ == "__main__":
-    mqttBroker = "mqtt.eclipseprojects.io"
-    sub = Subscriber(mqttBroker, "home/temp/bed/", port=1883)
-    sub.on_message = pp
-    sub.start()
