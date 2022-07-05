@@ -6,13 +6,11 @@ This module provides with interface for both client-publisher and subscriber
 
 ### Install
 
-`git clone https://github.com/mbhewitt/inlfux_line_mqtt `
+* `git clone https://github.com/mbhewitt/inlfux_line_mqtt`
+* `cd influx_line_mqtt`
+* `pip install dist/influx_line_mqtt-0.3.1-py3-none-any.whl`
 
-`cd influx_line_mqtt`
-
-`pip install dist/influx_line_mqtt-0.3.1-py3-none-any.whl`
-
-##### To use client-publisher
+### To use client-publisher
 
 ```
 from inlfux_line_mqtt.client import Client
@@ -30,7 +28,7 @@ while True:
        time.sleep(5)
 ```
 
-##### To use subsciber
+### To use subsciber
 
 ```
 from influx_line_mqtt.subscriber import Subscriber
@@ -43,3 +41,19 @@ sub = Subscriber(mqttBroker, "home/temp/bed/", port=1883)
 sub.on_message = pp
 sub.start()
 ```
+
+The function that gets assigned to on_message recieves data as an Influx_Data object and can be used as such Influx_Data class can be imported from subscriber
+
+```
+@dataclass
+class Influx_Data:
+	measurement:str
+	tag_set:List[Dict[str,Any]]
+	field_set:List[Dict[str,Any]]
+	timestamp:float
+```
+
+#### Packages used:
+
+1. paho-mqtt
+2. influx-line-protocol
