@@ -1,4 +1,4 @@
-# inlfux_line_mqtt
+# influx_line_mqtt
 
 This package enables an easy interface for using **[influx_data_protocol](https://docs.influxdata.com/influxdb/v2.3/reference/syntax/line-protocol/)** with **[mqtt client](https://mqtt.org/).**
 
@@ -13,7 +13,7 @@ This module provides with interface for both client-publisher and subscriber
 ### To use client-publisher
 
 ```
-from inlfux_line_mqtt.client import Client
+from influx_line_mqtt.client import Client
 
 broker = "mqtt.eclipseprojects.io"
 port = 1883
