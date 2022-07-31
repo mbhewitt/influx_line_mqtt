@@ -1,7 +1,7 @@
 from setuptools import setup
 setup(
     name="influx_line_mqtt",
-    version="0.3.1",
+    version="0.3.2",
     description="A library to publish data to InfluxDB using MQTT",
     long_description=open("README.md").read(),
     author="Mew Hewitt",

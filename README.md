@@ -8,7 +8,7 @@ This module provides with interface for both client-publisher and subscriber
 
 * `git clone https://github.com/mbhewitt/influx_line_mqtt`
 * `cd influx_line_mqtt`
-* `pip install dist/influx_line_mqtt-0.3.1-py3-none-any.whl`
+* `pip install dist/influx_line_mqtt-0.3.2-py3-none-any.whl`
 
 ### To use client-publisher
 

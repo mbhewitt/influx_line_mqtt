@@ -55,7 +55,7 @@ class Client:
             topic = f"{topic}/{value}"
         return f"{topic}/"
 
-    def _fix_timestamp(self, epoch_timestamp: float | str | datetime.datetime) -> float:
+    def _fix_timestamp(self, epoch_timestamp) -> float:
         """
         Private method to fix the timestamp
         and standardize it to the format of influx_line_protocol.
@@ -103,7 +103,7 @@ class Client:
                   tags: Dict[str, Any],
                   values: Dict[str, Any],
                   epoch_timestamp: float,
-                  dest_table: str | None = None,
+                  dest_table: str,
                   ):
         """
         Use this method to make data and encode it in influx_line_protocol
@@ -131,7 +131,7 @@ class Client:
         tags: Dict[str, Any],
         values: Dict[str, Any],
         epoch_timestamp: float,
-        dest_table: str | None = None,
+        dest_table: str,
     ):
         """
         Private method to make data and encode it in influx_line_protocol
