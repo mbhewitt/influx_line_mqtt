@@ -6,7 +6,7 @@ import datetime
 
 
 class Client:
-    def __init__(self, broker: str, port: int, client_id: str = "Random"):
+    def __init__(self, broker: str, port: int, client_id: str = "Random",qos=2):
         """Create an instance of Client
 
         Args:
@@ -16,6 +16,7 @@ class Client:
         """
         self.client = mqtt.Client(client_id)
         self._connect(broker=broker, port=port)
+        self.qos=qos
 
     def _connect(self, broker="localhost", port=1883):
         """Private method to connect to the broker and start loop for sending data
@@ -156,7 +157,7 @@ class Client:
     def _send_data(self):
         """Method to sent the made data made after using_make_data 
         """
-        self.client.publish(topic=self.topic, payload=f"{self.metric}")
+        self.client.publish(topic=self.topic, payload=f"{self.metric}",qos=self.qos)
 
     def close(self):
         """
