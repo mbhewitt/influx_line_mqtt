@@ -6,7 +6,7 @@ import datetime
 
 
 class Client:
-    def __init__(self, broker: str, port: int, client_id: str = "Random"):
+    def __init__(self, broker: str, port: int, client_id: str = "Random",qos=2):
         """Create an instance of Client
 
         Args:
@@ -16,6 +16,7 @@ class Client:
         """
         self.client = mqtt.Client(client_id)
         self._connect(broker=broker, port=port)
+        self.qos=qos
 
     def _connect(self, broker="localhost", port=1883):
         """Private method to connect to the broker and start loop for sending data
@@ -51,11 +52,9 @@ class Client:
         Returns:
             (str): Fixed topic
         """
-        for value in tags.values():
-            topic = f"{topic}/{value}"
-        return f"{topic}/"
+        return topic
 
-    def _fix_timestamp(self, epoch_timestamp: float | str | datetime.datetime) -> float:
+    def _fix_timestamp(self, epoch_timestamp) -> float:
         """
         Private method to fix the timestamp
         and standardize it to the format of influx_line_protocol.
@@ -103,7 +102,7 @@ class Client:
                   tags: Dict[str, Any],
                   values: Dict[str, Any],
                   epoch_timestamp: float,
-                  dest_table: str | None = None,
+                  dest_table: str,
                   ):
         """
         Use this method to make data and encode it in influx_line_protocol
@@ -131,7 +130,7 @@ class Client:
         tags: Dict[str, Any],
         values: Dict[str, Any],
         epoch_timestamp: float,
-        dest_table: str | None = None,
+        dest_table: str,
     ):
         """
         Private method to make data and encode it in influx_line_protocol
@@ -156,7 +155,7 @@ class Client:
     def _send_data(self):
         """Method to sent the made data made after using_make_data 
         """
-        self.client.publish(topic=self.topic, payload=f"{self.metric}")
+        self.client.publish(topic=self.topic, payload=f"{self.metric}",qos=self.qos)
 
     def close(self):
         """

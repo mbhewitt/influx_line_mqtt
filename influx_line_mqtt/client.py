@@ -52,9 +52,7 @@ class Client:
         Returns:
             (str): Fixed topic
         """
-        for value in tags.values():
-            topic = f"{topic}/{value}"
-        return f"{topic}/"
+        return topic
 
     def _fix_timestamp(self, epoch_timestamp) -> float:
         """
