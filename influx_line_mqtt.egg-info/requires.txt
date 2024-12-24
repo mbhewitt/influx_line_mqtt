@@ -1,2 +1,2 @@
-paho-mqtt
-influx-line-protocol
+influx_line_protocol@ git+https://github.com/mbhewitt/influx_line_protocol#egg=/influx_line_protocol
+paho-mqtt<2.0
