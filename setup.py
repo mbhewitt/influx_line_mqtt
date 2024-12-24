@@ -7,5 +7,5 @@ setup(
     author="Mew Hewitt",
     packages=["influx_line_mqtt"],
     install_requires=["paho-mqtt<2.0",
-'influx_line_protocol @ git+https://github.com/mbhewitt/influx_line_protocol#egg=influx_line_protocol'],
+'influx-line-protocol @ git+https://github.com/mbhewitt/influx-line-protocol#egg=influx-line-protocol'],
 )
