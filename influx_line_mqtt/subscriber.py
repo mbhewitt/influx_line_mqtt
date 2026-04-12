@@ -117,7 +117,7 @@ class Subscriber:
         self.topic = topic
         self._on_message: function = None
         self.port = port
-        self.client = mqtt.Client(client_id)
+        self.client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, client_id)
 
     @property
     def on_message(self):

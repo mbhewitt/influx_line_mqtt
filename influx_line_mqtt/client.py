@@ -14,7 +14,7 @@ class Client:
             port (int): port number you want to connect on
             client_id (str): Client id 
         """
-        self.client = mqtt.Client(client_id)
+        self.client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, client_id)
         self._connect(broker=broker, port=port)
         self.qos=qos
 
